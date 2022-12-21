@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: LimitlessOcean
+    network: goerli
+    source:
+      address: "0xD72515502C29f4a63302A053C3F4C81eF753C681"
+      abi: LimitlessOcean
+      startBlock: 7800400
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ItemBought
+        - ItemCanceled
+        - ItemListed
+        - ListingUpdated
+      abis:
+        - name: LimitlessOcean
+          file: ./abis/LimitlessOcean.json
+      eventHandlers:
+        - event: ItemBought(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleItemBought
+        - event: ItemCanceled(indexed address,indexed uint256,indexed address)
+          handler: handleItemCanceled
+        - event: ItemListed(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleItemListed
+        - event: ListingUpdated(indexed address,indexed address,uint256,uint256)
+          handler: handleListingUpdated
+      file: ./src/limitless-ocean.ts
